@@ -1,13 +1,13 @@
 import pytorch_lightning as pl
 import torch
 import torch.nn as nn
+from pytorch_lightning.callbacks import EarlyStopping
 from pytorch_lightning.loggers import WandbLogger
 import numpy as np
 import torchsummary
 
-from src.models import default, convolutional
+from src.models import convolutional
 from src.data_module import DataModule
-from src.early_stop import EarlyStopping, EpochEarlyStop
 import argparse
 
 validation_split = 0.2
@@ -23,6 +23,7 @@ class RMSELoss(torch.nn.Module):
         criterion = nn.MSELoss()
         loss = torch.sqrt(criterion(x, y))
         return loss
+
 
 class LitModel(pl.LightningModule):
     def __init__(self, im_size):
