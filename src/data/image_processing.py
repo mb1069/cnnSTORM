@@ -1,10 +1,6 @@
-from PIL import Image, ImageSequence
 import numpy as np
-from skimage import io, feature
-import matplotlib.pyplot as plt
-import scipy
-import os
 import pandas as pd
+from skimage import io, feature
 
 
 def normalise_image(image_data_array, bit_16=True):  # Normalize images to 0 - 1

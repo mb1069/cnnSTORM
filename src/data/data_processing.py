@@ -1,15 +1,13 @@
-from PIL import Image, ImageSequence
 import numpy as np
 import scipy.io as sio
-from skimage import io, feature
-import os
+from skimage import io
 import pandas as pd
-import image_processing
 import random
 
 
 # Use ImageJ macro to generate bead frames, then use this code to
 # extract bead PSFs and positions
+from src.data import image_processing
 
 
 def process_STORM_data(directory, samples=500, bound=16, y_dims=1,
