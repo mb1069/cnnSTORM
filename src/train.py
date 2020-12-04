@@ -2,9 +2,9 @@ import pytorch_lightning as pl
 import torch
 import torch.nn as nn
 from pytorch_lightning.callbacks import EarlyStopping
+import wandb
 from pytorch_lightning.loggers import WandbLogger
-import numpy as np
-import torchsummary
+from torch.optim.lr_scheduler import LambdaLR
 
 from src.models import convolutional
 from src.data_module import DataModule
@@ -13,6 +13,8 @@ import argparse
 validation_split = 0.2
 epochs = 1000
 batch_size = 256
+
+im_size = 32
 
 
 class RMSELoss(torch.nn.Module):
@@ -70,10 +72,11 @@ if __name__ == '__main__':
     parser.add_argument('-r', '--rname')
     args = parser.parse_args()
 
-    im_size = 32
     dm = DataModule(batch_size)
 
     wandb_logger = WandbLogger(project='smlm_z', name=args.rname)
+    wandb.init()
+    wandb.save(__file__)
 
     model = LitModel(im_size=im_size)
 
@@ -92,3 +95,7 @@ if __name__ == '__main__':
                          callbacks=[early_stop_callback])
 
     trainer.fit(model, dm)
+
+    model_name = (args.rname or 'default') + '.pth'
+    trainer.save_checkpoint(model_name)
+    wandb.save(model_name)

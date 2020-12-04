@@ -118,7 +118,7 @@ def get_emitter_data(image, points, bound=16, normalise=True, with_zpos=True):
         return image_data, z_data
     else:
         # Returns PSFs only
-        return image_data
+        return image_data, None
 
 
 def detect_blobs(image, min_sigma=1, max_sigma=50, num_sigma=10, threshold=0.01,

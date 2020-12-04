@@ -5,7 +5,7 @@ import pytorch_lightning as pl
 import numpy as np
 import os
 
-from src.data.data_processing import process_STORM_data
+from src.data.data_processing import process_STORM_datadir
 
 dtype = np.float32
 
@@ -16,8 +16,6 @@ class CustomDataset(Dataset):
     def __init__(self, x, y):
         assert x.shape[0] == y.shape[0]
 
-        # Reorder to C X Y
-        x = np.moveaxis(x, 3, 1)
         self.x = x.astype(dtype)
         self.y = y.astype(dtype)
 
@@ -29,8 +27,7 @@ class CustomDataset(Dataset):
 
 
 def load_datasets(test_size):
-    X, y = process_STORM_data(data_dir)
-
+    X, y = process_STORM_datadir(data_dir)
     X_train, X_val, y_train, y_val = train_test_split(X, y, train_size=1 - test_size)
 
     train_dataset = CustomDataset(X_train, y_train)
